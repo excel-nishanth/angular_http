@@ -37,8 +37,22 @@ export class HeroesComponent implements OnInit {
 
   // The HeroService.getHeroes method used to return a Hero[]. Now it returns an Observable<Hero[]>.
   getHeroes(): void {
-    this.heroService.getHeroes()
+    this.heroService.getHeroes2()
         .subscribe(heroes2 => this.heroes2 = heroes2);
+  }
+
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.heroService.addHero({ name } as Hero)
+      .subscribe(hero => {
+        this.heroes2.push(hero);
+      });
+  }
+
+  delete(hero: Hero): void {
+    this.heroes = this.heroes2.filter(h => h !== hero);
+    this.heroService.deleteHero(hero).subscribe();
   }
 
 

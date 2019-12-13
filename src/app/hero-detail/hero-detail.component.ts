@@ -30,7 +30,7 @@ export class HeroDetailComponent implements OnInit {
 
   // Observables
   getHeroes(): void {
-    this.heroService.getHeroes().subscribe(heroes => this.heroes3 = heroes);
+    this.heroService.getHeroes2().subscribe(heroes => this.heroes3 = heroes);
   }
 
 
@@ -40,14 +40,40 @@ export class HeroDetailComponent implements OnInit {
     this.heroService.getHero(id).subscribe(hero1 => this.hero1 = hero1);
   }
 
+  getHero2(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    console.log('----------------' + id);
+    this.heroService.getHero2(id).subscribe(hero1 => this.hero1 = hero1);
+  }
+
+  // COMBINED getHero() AND getHero2()
+  getHero3(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    console.log('----------------' + id);
+    if (id < 11) {
+    this.heroService.getHero(id).subscribe(hero1 => this.hero1 = hero1);
+    } else {
+      this.heroService.getHero2(id).subscribe(hero1 => this.hero1 = hero1);
+    }
+  }
+
   goBack(): void {
     this.location.back();
   }
 
+  save(): void {
+    console.log('save: ' + JSON.stringify(this.hero1));
+    this.heroService.updateHero(this.hero1)
+      .subscribe(() => this.goBack());
+  }
+
+
   ngOnInit() {
     // tslint:disable-next-line: no-unused-expression
     this.getHeroes();
-    this.getHero();
+    // this.getHero();
+    // this.getHero2();
+    this.getHero3();
   }
 
 }
